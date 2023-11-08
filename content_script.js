@@ -45,11 +45,22 @@ function getLanguageExtension() {
     return LANGUAGE_CONVERTER[imageOfInterest.alt];
 }
 
+function joinNodeListText(nodeList, joinWith="\n") {
+    const result = []
+    nodeList.forEach(line => result.push(line.innerText));
+    return result.join(joinWith);
+}
+
 function getSubmissionCode() {
     const lines = document.querySelectorAll("pre.CodeMirror-line");
-    const linesText = [];
-    lines.forEach(line => linesText.push(line.innerText));
-    return linesText.join("\n");
+    return joinNodeListText(lines);
+}
+
+function getProblemText() {
+    const txtHeader = document.querySelectorAll("h2")[0];
+    const txtBody = document.querySelectorAll("h2 ~ *");
+    const txt = { title: txtHeader.innerText, body: joinNodeListText(txtBody, "\n\n") };
+    return txt;
 }
 
 function listenForTestSubmissions() {
@@ -63,6 +74,9 @@ function listenForTestSubmissions() {
 
                 const code = getSubmissionCode();
                 console.log(code);
+
+                const txt = getProblemText();
+                console.log(txt);
             }
         }
     });
