@@ -1,12 +1,5 @@
 console.log("Running the content script");
 
-const LANGUAGE_CONVERTER = {
-    nodelogo: ".js",
-    python3logo: ".py",
-    cpplogo: ".cpp",
-    javalogo: ".java"
-}
-
 function checkPassedAllTests(verbose = true) {
     if (verbose) {
         console.log("Checking to see whether all tests passed...");
@@ -40,6 +33,13 @@ function checkPassedAllTests(verbose = true) {
 }
 
 function getLanguageExtension() {
+    const LANGUAGE_CONVERTER = {
+        nodelogo: ".js",
+        python3logo: ".py",
+        cpplogo: ".cpp",
+        javalogo: ".java"
+    }
+
     const images = document.querySelectorAll("img");
     const imageOfInterest = images[1];
     return LANGUAGE_CONVERTER[imageOfInterest.alt];
@@ -57,15 +57,28 @@ function getSubmissionCode() {
 }
 
 function getProblemText() {
-    const txtHeader = document.querySelectorAll("h2")[0];
-    const txtBody = document.querySelectorAll("h2 ~ *");
-    const txt = { title: txtHeader.innerText, body: joinNodeListText(txtBody, "\n\n") };
-    return txt;
+    let txtHeader;
+    let txtBody;
+
+    try {
+        txtHeader = document.querySelectorAll("h2")[0].innerText;
+        txtBody = document.querySelectorAll("h2 ~ *");
+    } catch {
+        txtHeader = document.querySelectorAll("h1")[0].innerText;
+        txtBody = document.querySelectorAll("h1 ~ *");
+    }
+
+    return { title: txtHeader, body: joinNodeListText(txtBody, "\n\n") };
 }
 
+function sleep(milliseconds) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+  }
+
 function listenForTestSubmissions() {
-    chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
         if (request.action === "network_request_completed") {
+            await sleep(250);
             const passedAllTests = checkPassedAllTests(verbose = false);
             console.log("Passed all tests: ", passedAllTests);
             if (passedAllTests) {
