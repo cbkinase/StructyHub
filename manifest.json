@@ -1,0 +1,33 @@
+{
+    "manifest_version": 3,
+    "name": "StructyHub",
+    "author": "Cameron Beck",
+    "version": "0.1",
+    "description": "Automatically integrate your Structy submissions to GitHub",
+    "permissions": ["activeTab", "webRequest", "tabs"],
+    "host_permissions": [
+        "http://structy.net/*",
+        "https://structy.net/*",
+        "http://www.structy.net/*",
+        "https://www.structy.net/*",
+        "https://api.structy.net/api/*"
+      ],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "action": {
+      "default_popup": "popup.html"
+    },
+    "content_scripts": [
+        {
+          "matches": [
+            "http://structy.net/*",
+            "https://structy.net/*",
+            "http://www.structy.net/*",
+            "https://www.structy.net/*"
+          ],
+          "js": ["content_script.js"],
+          "run_at": "document_idle"
+        }
+      ]
+  }
