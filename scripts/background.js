@@ -19,3 +19,26 @@ chrome.webRequest.onCompleted.addListener(
     },
     ["responseHeaders"]
 );
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    switch (request.action) {
+        case "send_data":
+            storeData(request.data);
+            console.log(request.data);
+            break;
+        case "request_data":
+            sendResponse(retrieveData());
+            break;
+        default:
+            break;
+    }
+});
+
+function storeData(data) {
+    // Logic to store data
+}
+
+function retrieveData() {
+    // Logic to retrieve and return stored data
+    return /* stored data */;
+}

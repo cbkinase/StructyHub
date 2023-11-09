@@ -1,3 +1,5 @@
+/* %%%%%%%%  Light-Dark Mode Toggle  %%%%%%%% */
+
 :root[data-color-mode="light"] {
     --bg-color: #fff;
     --fg-color: #000;
@@ -8,6 +10,9 @@
     --yellow: #faf4df;
     --yellow-bold: #eeac3c;
     --subtitle-text: #666;
+    --gh-button-background: #24292e;
+    --gh-button-background-active: #313131;
+    --gh-button-text: #ffffff;
 }
 
 :root[data-color-mode="dark"] {
@@ -19,7 +24,10 @@
     --green-bold: #91c699;
     --yellow: #59533d;
     --yellow-bold: #f7d575;
-   --subtitle-text: #cccccc;
+    --subtitle-text: #cccccc;
+    --gh-button-background: #24292e;
+    --gh-button-background-active: #313131;
+    --gh-button-text: #ffffff;
 }
 
 :root[data-color-mode="light"] .hidden_in_light_mode {
@@ -64,6 +72,7 @@
     fill: var(--yellow-bold);
 }
 
+/* %%%%%%%%  Main Styles  %%%%%%%% */
 
 body,
 html {
@@ -102,8 +111,8 @@ html {
 }
 
 #loginButton {
-    background-color: #24292e;
-    color: #ffffff;
+    background-color: var(--gh-button-background);
+    color: var(--gh-button-text);
     padding: 8px 10px;
     border: 1px solid transparent;
     border-radius: 6px;
@@ -121,12 +130,9 @@ html {
 }
 
 #loginButton:hover,
-#loginButton:focus {
-    background-color: #313131;
-}
-
+#loginButton:focus,
 #loginButton:active {
-    background-color: #313131;
+    background-color: var(--gh-button-background-active);
 }
 
 #loginButton>svg {

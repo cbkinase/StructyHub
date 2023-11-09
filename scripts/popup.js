@@ -1,4 +1,5 @@
 console.log("Popup script running");
+
 function generateCodeVerifier() {
     const array = new Uint8Array(32);
     window.crypto.getRandomValues(array);

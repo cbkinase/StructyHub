@@ -26,7 +26,6 @@ function checkPassedAllTests(verbose = true) {
         console.log("Did not test:", didNotTest.length);
     }
 
-
     if (allTests.length === passedTests.length) {
         return true;
     }
@@ -45,7 +44,7 @@ function getLanguageExtension() {
     return LANGUAGE_CONVERTER[imageOfInterest.alt];
 }
 
-function joinNodeListText(nodeList, joinWith="\n") {
+function joinNodeListText(nodeList, joinWith = "\n") {
     const result = []
     nodeList.forEach(line => result.push(line.innerText));
     return result.join(joinWith);
@@ -73,11 +72,12 @@ function getProblemText() {
 
 function sleep(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
-  }
+}
 
 function listenForTestSubmissions() {
     chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
         if (request.action === "network_request_completed") {
+            // Slight delay to ensure UI has updated
             await sleep(250);
             const passedAllTests = checkPassedAllTests(verbose = false);
             console.log("Passed all tests: ", passedAllTests);
@@ -90,6 +90,9 @@ function listenForTestSubmissions() {
 
                 const txt = getProblemText();
                 console.log(txt);
+
+                const dataToSend = { languageExtension, code, txt };
+                chrome.runtime.sendMessage({ data: dataToSend, action: "send_data" });
             }
         }
     });
