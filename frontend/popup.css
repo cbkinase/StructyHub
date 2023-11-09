@@ -25,8 +25,8 @@
     --yellow: #59533d;
     --yellow-bold: #f7d575;
     --subtitle-text: #cccccc;
-    --gh-button-background: #24292e;
-    --gh-button-background-active: #313131;
+    --gh-button-background: #313131;
+    --gh-button-background-active: #3b3b3b;
     --gh-button-text: #ffffff;
 }
 
@@ -124,7 +124,7 @@ html {
     gap: 8px;
     text-decoration: none;
     font-weight: 500;
-    transition: background-color 0.3s, border-color 0.3s, color 0.3s;
+    transition: background-color 0.3s, color 0.3s;
     width: 100%;
     max-width: 200px;
 }

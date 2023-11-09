@@ -9,17 +9,19 @@
         "48": "assets/logo48.png",
         "128": "assets/logo128.png"
       },
-    "permissions": ["activeTab", "webRequest", "tabs"],
+    "permissions": ["activeTab", "webRequest", "tabs", "identity", "storage"],
     "host_permissions": [
         "https://structy.net/*",
         "https://www.structy.net/*",
-        "https://api.structy.net/api/*"
+        "https://api.structy.net/api/*",
+        "https://api.github.com/*",
+        "https://github.com/*"
       ],
     "background": {
       "service_worker": "scripts/background.js"
     },
     "action": {
-      "default_popup": "popup.html"
+      "default_popup": "frontend/popup.html"
     },
     "content_scripts": [
         {

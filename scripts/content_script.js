@@ -74,6 +74,18 @@ function sleep(milliseconds) {
     return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
+function getAccessToken() {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.get(['accessToken'], function(result) {
+            if (chrome.runtime.lastError) {
+                reject(new Error(chrome.runtime.lastError.message));
+            } else {
+                resolve(result.accessToken);
+            }
+        });
+    });
+}
+
 function listenForTestSubmissions() {
     chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
         if (request.action === "network_request_completed") {
@@ -93,6 +105,9 @@ function listenForTestSubmissions() {
 
                 const dataToSend = { languageExtension, code, txt };
                 chrome.runtime.sendMessage({ data: dataToSend, action: "send_data" });
+
+                const accessToken = await getAccessToken();
+                console.log(accessToken);
             }
         }
     });
