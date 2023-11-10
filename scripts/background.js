@@ -28,16 +28,27 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 });
 
+function generateState() {
+    const array = new Uint8Array(16);
+    crypto.getRandomValues(array);
+    return Array.from(array, byte => byte.toString(16).padStart(2, '0')).join('');
+}
+
 const clientId = 'c57a9d51b4a666b0790e';
 const clientSecret = '';
+const state = generateState();
 
-const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=repo`;
+const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&scope=repo&state=${state}`;
 
 function handleOauth() {
     chrome.identity.launchWebAuthFlow(
         { url: authUrl, interactive: true },
         function (redirectUri) {
             const code = new URL(redirectUri).searchParams.get('code');
+            const receivedState = new URL(redirectUri).searchParams.get('state');
+            if (state !== receivedState) {
+                throw new Error("Preventing possibly CSRF attack");
+            }
             exchangeCodeForToken(code);
         }
     );
