@@ -1,6 +1,6 @@
 console.log("Running the content script");
 
-function checkPassedAllTests(verbose = true) {
+function checkPassedAllTests(verbose = false) {
     if (verbose) {
         console.log("Checking to see whether all tests passed...");
     }
@@ -10,7 +10,7 @@ function checkPassedAllTests(verbose = true) {
     const didNotTest = document.querySelectorAll(".far.fa-circle")
     const allTests = [...passedTests, ...failedTests, ...didNotTest];
 
-    console.log("All tests length: ", allTests.length);
+    // console.log("All tests length: ", allTests.length);
 
     if (allTests.length === 0) {
         return false;
@@ -168,33 +168,33 @@ async function createRepoIfNotExists(token, owner, repoName, isPrivate) {
 async function initializeRepoWithReadme(token, owner, repoName, readmeContent) {
     const url = `https://api.github.com/repos/${owner}/${repoName}/contents/README.md`;
     const headers = {
-      'Authorization': `token ${token}`,
-      'Accept': 'application/vnd.github.v3+json'
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json'
     };
 
     const data = {
-      message: 'Initial commit',
-      content: btoa(readmeContent) // Base64 encode the README content
+        message: 'Initial commit',
+        content: btoa(readmeContent) // Base64 encode the README content
     };
 
     try {
-      const response = await fetch(url, {
-        method: 'PUT',
-        headers,
-        body: JSON.stringify(data)
-      });
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify(data)
+        });
 
-      if (!response.ok) {
-        throw new Error('Failed to initialize repository with README.');
-      }
+        if (!response.ok) {
+            throw new Error('Failed to initialize repository with README.');
+        }
 
-    //   console.log('Repository initialized with README.');
+        //   console.log('Repository initialized with README.');
     } catch (error) {
-      console.error('Error initializing repository:', error);
+        console.error('Error initializing repository:', error);
     }
-  }
+}
 
-async function createCommit(token, owner, repo, branch, commitMessage, content, filepath) {
+async function createCommit(token, owner, repo, branch, commitMessage, content, filepath, readmeFilepath, readmeContent) {
     const headers = {
         'Authorization': `token ${token}`,
         'Content-Type': 'application/json',
@@ -222,6 +222,12 @@ async function createCommit(token, owner, repo, branch, commitMessage, content, 
             mode: '100644',
             type: 'blob',
             content: content
+        },
+        {
+            path: readmeFilepath,
+            mode: '100644',
+            type: 'blob',
+            content: readmeContent
         }]
     });
 
@@ -252,7 +258,6 @@ async function createCommit(token, owner, repo, branch, commitMessage, content, 
     // Update the branch to point to the new commit
     const updateBranchUrl = `https://api.github.com/repos/${owner}/${repo}/git/refs/heads/${branch}`;
     const updateBranchBody = JSON.stringify({ sha: newCommitSha });
-    console.log(updateBranchBody);
 
     const updateBranchResponse = await fetch(updateBranchUrl, {
         method: 'PATCH',
@@ -274,7 +279,7 @@ function main() {
                 // Slight delay to ensure UI has updated
                 await sleep(250);
                 const passedAllTests = checkPassedAllTests(verbose = false);
-                console.log("Passed all tests: ", passedAllTests);
+                // console.log("Passed all tests: ", passedAllTests);
                 if (passedAllTests) {
                     const languageExtension = getLanguageExtension();
                     const code = getSubmissionCode();
@@ -284,7 +289,7 @@ function main() {
                     // chrome.runtime.sendMessage({ data: dataToSend, action: "sync_popup_with_background_worker" });
                     // chrome.runtime.sendMessage({ data: dataToSend, action: "send_data" });
 
-                    const repoName = "gh-api-test-6";
+                    const repoName = "StructyHub-Solutions";
                     const isPrivate = true;
                     const accessToken = await getAccessToken();
                     const owner = await getAuthenticatedUser(accessToken);
@@ -297,9 +302,7 @@ function main() {
                     const codeFilepath = `${cleanedTitle}/${cleanedTitle}${languageExtension}`;
                     const readmeFilepath = `${cleanedTitle}/README.txt`;
 
-                    const commit = await createCommit(accessToken, owner, repo.name, branch, commitMessage, content, codeFilepath);
-                    await sleep(50);
-                    const readmeCommit = await createCommit(accessToken, owner, repo.name, branch, commitMessage, txt.body, readmeFilepath);
+                    await createCommit(accessToken, owner, repo.name, branch, commitMessage, content, codeFilepath, readmeFilepath, txt.body);
                 }
                 break;
             }
