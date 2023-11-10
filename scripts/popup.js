@@ -1,5 +1,11 @@
 console.log("Popup script running");
 
+
+
+/*      *** Dark-Light Mode Toggle ***       */
+
+
+
 document.querySelectorAll('.color_mode_button').forEach((button) => {
     button.addEventListener('click', (event) => {
         const targetElement = /** @type {HTMLElement} */ (event.currentTarget);
@@ -20,7 +26,94 @@ if (localStorage.getItem('structyhub-data-color-mode') === 'dark') {
     document.documentElement.setAttribute('data-color-mode', 'dark');
 }
 
+
+
+/*     *** Login Handler ***       */
+
+
+
 const loginButton = document.getElementById('loginButton');
-loginButton.addEventListener('click', function () {
+const btnTxt = document.getElementById("btn-text");
+
+function applyLoggedInStyles() {
+    btnTxt.innerText = "Authorized";
+    loginButton.style.cursor = "text";
+    loginButton.removeEventListener('click', handleOauth);
+}
+
+function applyCheckingLoginStyles() {
+    btnTxt.innerText = "Verifying Token";
+}
+
+function applyLoggedOutStyles() {
+    btnTxt.innerText = "Sign in with GitHub";
+}
+
+function checkLoginStatus() {
+    applyCheckingLoginStyles();
+    chrome.storage.local.get(['accessToken'], function (result) {
+        if (result.accessToken) {
+            validateToken(result.accessToken, function (isValid) {
+                if (isValid) {
+                    applyLoggedInStyles();
+                } else {
+                    applyLoggedOutStyles();
+                }
+            });
+        } else {
+            applyLoggedOutStyles();
+        }
+    });
+}
+
+function validateToken(token, callback) {
+    fetch('https://api.github.com/user', {
+        method: 'GET',
+        headers: {
+            'Authorization': `Bearer ${token}`,
+        },
+    }).then(response => {
+        callback(response.ok);
+    }).catch(error => {
+        callback(false);
+    });
+}
+
+
+
+/*     *** Information Sync Functions ***       */
+
+
+
+function syncPopupWithBackgroundWorker(payload) {
+    const LOL = document.createElement("p");
+    LOL.innerText = payload.languageExtension;
+    document.documentElement.appendChild(LOL);
+}
+
+
+
+/*     *** Event Listeners ***       */
+
+
+function handleOauth() {
     chrome.runtime.sendMessage({ action: "handle_oauth" });
+}
+
+loginButton.addEventListener('click', handleOauth);
+
+document.addEventListener('DOMContentLoaded', checkLoginStatus);
+
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    switch (request.action) {
+        case "sync_popup_with_background_worker": {
+            syncPopupWithBackgroundWorker(request.data);
+            break;
+        }
+        case "login_successful": {
+            applyLoggedInStyles();
+        }
+        default:
+            break;
+    }
 });

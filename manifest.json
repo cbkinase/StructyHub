@@ -3,7 +3,7 @@
     "name": "StructyHub",
     "author": "Cameron Beck",
     "version": "0.1",
-    "description": "Automatically integrate your Structy submissions to GitHub",
+    "description": "Automatically integrate your Structy submissions to GitHub.",
     "icons": {
         "16": "assets/logo16.png",
         "48": "assets/logo48.png",
@@ -26,9 +26,7 @@
     "content_scripts": [
         {
           "matches": [
-            "http://structy.net/*",
             "https://structy.net/*",
-            "http://www.structy.net/*",
             "https://www.structy.net/*"
           ],
           "js": ["scripts/content_script.js"],

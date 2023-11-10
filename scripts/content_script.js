@@ -76,7 +76,7 @@ function sleep(milliseconds) {
 
 function getAccessToken() {
     return new Promise((resolve, reject) => {
-        chrome.storage.local.get(['accessToken'], function(result) {
+        chrome.storage.local.get(['accessToken'], function (result) {
             if (chrome.runtime.lastError) {
                 reject(new Error(chrome.runtime.lastError.message));
             } else {
@@ -86,31 +86,39 @@ function getAccessToken() {
     });
 }
 
-function listenForTestSubmissions() {
+function main() {
     chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
-        if (request.action === "network_request_completed") {
-            // Slight delay to ensure UI has updated
-            await sleep(250);
-            const passedAllTests = checkPassedAllTests(verbose = false);
-            console.log("Passed all tests: ", passedAllTests);
-            if (passedAllTests) {
-                const languageExtension = getLanguageExtension();
-                console.log(languageExtension);
+        switch (request.action) {
+            case "network_request_completed":
+                // Slight delay to ensure UI has updated
+                await sleep(250);
+                const passedAllTests = checkPassedAllTests(verbose = false);
+                console.log("Passed all tests: ", passedAllTests);
+                if (passedAllTests) {
+                    const languageExtension = getLanguageExtension();
+                    console.log(languageExtension);
 
-                const code = getSubmissionCode();
-                console.log(code);
+                    const code = getSubmissionCode();
+                    console.log(code);
 
-                const txt = getProblemText();
-                console.log(txt);
+                    const txt = getProblemText();
+                    console.log(txt);
 
-                const dataToSend = { languageExtension, code, txt };
-                chrome.runtime.sendMessage({ data: dataToSend, action: "send_data" });
+                    const dataToSend = { languageExtension, code, txt };
+                    chrome.runtime.sendMessage({ data: dataToSend, action: "sync_popup_with_background_worker" });
 
-                const accessToken = await getAccessToken();
-                console.log(accessToken);
-            }
+                    chrome.runtime.sendMessage({ data: dataToSend, action: "send_data" });
+
+                    const accessToken = await getAccessToken();
+                    console.log(accessToken);
+                }
+                break;
+
+            default:
+                break;
         }
     });
 }
 
-listenForTestSubmissions();
+
+main();

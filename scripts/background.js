@@ -3,21 +3,19 @@
 chrome.webRequest.onCompleted.addListener(
     (details) => {
         console.log("Headers received from api.structy.net:", details.url);
-        console.log(details);
-
         if (details.url.includes("test-results")) {
-            chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-                chrome.tabs.sendMessage(tabs[0].id, { action: "network_request_completed" });
+            chrome.tabs.query({ url: ["https://structy.net/*", "https://www.structy.net/*"] }, function (tabs) {
+                for (const tab of tabs) {
+                    chrome.tabs.sendMessage(tab.id, { action: "network_request_completed" });
+                }
             });
         }
-
     },
     {
         urls: [
             "https://api.structy.net/api/*"
         ]
     },
-    ["responseHeaders"]
 );
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
@@ -36,13 +34,14 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 });
 
+let storedData = {};
+
 function storeData(data) {
-    // Logic to store data
+    storedData = data;
 }
 
 function retrieveData() {
-    // Logic to retrieve and return stored data
-    return /* stored data */;
+    return storedData;
 }
 
 const clientId = 'c57a9d51b4a666b0790e';
@@ -78,6 +77,7 @@ function exchangeCodeForToken(code) {
         .then(data => {
             if (data.access_token) {
                 chrome.storage.local.set({ accessToken: data.access_token });
+                chrome.runtime.sendMessage({ action: "login_successful" });
             } else {
                 console.error('Failed to retrieve access token:', data);
             }
