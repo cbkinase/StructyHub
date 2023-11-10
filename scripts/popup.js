@@ -112,6 +112,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         }
         case "login_successful": {
             applyLoggedInStyles();
+            break;
         }
         default:
             break;
