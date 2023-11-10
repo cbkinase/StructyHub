@@ -20,12 +20,6 @@ chrome.webRequest.onCompleted.addListener(
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     switch (request.action) {
-        case "send_data":
-            storeData(request.data);
-            break;
-        case "request_data":
-            sendResponse(retrieveData());
-            break;
         case "handle_oauth":
             handleOauth();
             break;

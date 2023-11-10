@@ -1,5 +1,3 @@
-console.log("Running the content script");
-
 function checkPassedAllTests(verbose = false) {
     if (verbose) {
         console.log("Checking to see whether all tests passed...");
@@ -289,18 +287,18 @@ function main() {
                     // chrome.runtime.sendMessage({ data: dataToSend, action: "sync_popup_with_background_worker" });
                     // chrome.runtime.sendMessage({ data: dataToSend, action: "send_data" });
 
-                    const repoName = "StructyHub-Solutions";
+                    const repoName = "Structy-Hub";
                     const isPrivate = true;
                     const accessToken = await getAccessToken();
                     const owner = await getAuthenticatedUser(accessToken);
                     const repo = await createRepoIfNotExists(accessToken, owner, repoName, isPrivate);
 
                     const branch = "main";
-                    const commitMessage = "With love from StructyHub";
                     const content = code;
                     const cleanedTitle = txt.title.split(" ").join("_");
                     const codeFilepath = `${cleanedTitle}/${cleanedTitle}${languageExtension}`;
                     const readmeFilepath = `${cleanedTitle}/README.txt`;
+                    const commitMessage = `Solved ${txt.title}`;
 
                     await createCommit(accessToken, owner, repo.name, branch, commitMessage, content, codeFilepath, readmeFilepath, txt.body);
                 }

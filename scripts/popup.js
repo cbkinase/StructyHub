@@ -1,7 +1,3 @@
-console.log("Popup script running");
-
-
-
 /*      *** Dark-Light Mode Toggle ***       */
 
 
