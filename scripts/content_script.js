@@ -191,6 +191,29 @@ async function initializeRepoWithReadme(token, owner, repoName, readmeContent) {
     }
 }
 
+function b64DecodeUnicode(str) {
+    // Going backwards: from bytestream, to percent-encoding, to original string.
+    // See https://stackoverflow.com/questions/30106476/using-javascripts-atob-to-decode-base64-doesnt-properly-decode-utf-8-strings
+    return decodeURIComponent(atob(str).split('').map(function (c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+}
+
+async function checkForChanges(token, owner, repo, branch, filepath, newContent, readmeFilepath, newReadmeContent, headers) {
+    async function fetchFileContent(path) {
+        const fileUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`;
+        const response = await fetch(fileUrl, { headers });
+        if (!response.ok) return null;
+        const data = await response.json();
+        return b64DecodeUnicode(data.content);
+    }
+
+    const currentContent = await fetchFileContent(filepath);
+    const currentReadmeContent = await fetchFileContent(readmeFilepath);
+
+    return currentContent !== newContent || currentReadmeContent !== newReadmeContent;
+}
+
 async function createCommit(token, owner, repo, branch, commitMessage, content, filepath, readmeFilepath, readmeContent) {
     const headers = {
         'Authorization': `token ${token}`,
@@ -209,6 +232,12 @@ async function createCommit(token, owner, repo, branch, commitMessage, content, 
     const commitResponse = await fetch(commitUrl, { headers });
     const commitData = await commitResponse.json();
     const treeSha = commitData.tree.sha;
+
+    // Check if the content of the files has changed
+    const hasChanges = await checkForChanges(token, owner, repo, branch, filepath, content, readmeFilepath, readmeContent, headers);
+    if (!hasChanges) {
+        return; // Abort if no changes are detected
+    }
 
     // Create a new tree with the content for the commit
     const treeUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees`;
