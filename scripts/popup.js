@@ -77,19 +77,8 @@ function validateToken(token, callback) {
 
 
 
-/*     *** Information Sync Functions ***       */
-
-
-
-function syncPopupWithBackgroundWorker(payload) {
-    const LOL = document.createElement("p");
-    LOL.innerText = payload.languageExtension;
-    document.documentElement.appendChild(LOL);
-}
-
-
-
 /*     *** Event Listeners ***       */
+
 
 
 function handleOauth() {
@@ -102,10 +91,6 @@ document.addEventListener('DOMContentLoaded', checkLoginStatus);
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     switch (request.action) {
-        case "sync_popup_with_background_worker": {
-            syncPopupWithBackgroundWorker(request.data);
-            break;
-        }
         case "login_successful": {
             applyLoggedInStyles();
             break;

@@ -28,16 +28,6 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     }
 });
 
-let storedData = {};
-
-function storeData(data) {
-    storedData = data;
-}
-
-function retrieveData() {
-    return storedData;
-}
-
 const clientId = 'c57a9d51b4a666b0790e';
 const clientSecret = '';
 

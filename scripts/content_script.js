@@ -8,13 +8,15 @@ function checkPassedAllTests(verbose = false) {
     const didNotTest = document.querySelectorAll(".far.fa-circle")
     const allTests = [...passedTests, ...failedTests, ...didNotTest];
 
-    // console.log("All tests length: ", allTests.length);
+    if (verbose) {
+        console.log("All tests length: ", allTests.length);
+    }
 
     if (allTests.length === 0) {
         return false;
     }
 
-    if (failedTests.length || didNotTest.length) {
+    if (failedTests.length) {
         return false;
     }
 
@@ -126,7 +128,6 @@ async function createRepo(token, repoName, isPrivate = true) {
         }
 
         const data = await response.json();
-        // console.log('Repository created: ', data.html_url);
         return data;
     } catch (error) {
         console.error('Error creating repository: ', error);
@@ -158,7 +159,6 @@ async function createRepoIfNotExists(token, owner, repoName, isPrivate) {
         await initializeRepoWithReadme(token, owner, repoName, readmeContent);
         return repo
     } else {
-        // console.log(`The repository ${repoName} already exists.`);
         return repoExists;
     }
 }
@@ -171,7 +171,7 @@ async function initializeRepoWithReadme(token, owner, repoName, readmeContent) {
     };
 
     const data = {
-        message: 'Initial commit',
+        message: 'StructyHub repo initialization',
         content: btoa(readmeContent) // Base64 encode the README content
     };
 
@@ -186,7 +186,6 @@ async function initializeRepoWithReadme(token, owner, repoName, readmeContent) {
             throw new Error('Failed to initialize repository with README.');
         }
 
-        //   console.log('Repository initialized with README.');
     } catch (error) {
         console.error('Error initializing repository:', error);
     }
@@ -264,7 +263,6 @@ async function createCommit(token, owner, repo, branch, commitMessage, content, 
     });
 
     if (updateBranchResponse.ok) {
-        // console.log(`Commit created: ${newCommitSha}`);
     } else {
         console.error(`Error creating commit: ${updateBranchResponse.statusText}`);
     }
@@ -277,15 +275,10 @@ function main() {
                 // Slight delay to ensure UI has updated
                 await sleep(250);
                 const passedAllTests = checkPassedAllTests(verbose = false);
-                // console.log("Passed all tests: ", passedAllTests);
                 if (passedAllTests) {
                     const languageExtension = getLanguageExtension();
                     const code = getSubmissionCode();
                     const txt = getProblemText();
-
-                    // const dataToSend = { languageExtension, code, txt };
-                    // chrome.runtime.sendMessage({ data: dataToSend, action: "sync_popup_with_background_worker" });
-                    // chrome.runtime.sendMessage({ data: dataToSend, action: "send_data" });
 
                     const repoName = "Structy-Hub";
                     const isPrivate = true;
@@ -298,7 +291,7 @@ function main() {
                     const cleanedTitle = txt.title.split(" ").join("_");
                     const codeFilepath = `${cleanedTitle}/${cleanedTitle}${languageExtension}`;
                     const readmeFilepath = `${cleanedTitle}/README.txt`;
-                    const commitMessage = `Solved ${txt.title}`;
+                    const commitMessage = `Solved '${txt.title}' (${languageExtension})`;
 
                     await createCommit(accessToken, owner, repo.name, branch, commitMessage, content, codeFilepath, readmeFilepath, txt.body);
                 }
