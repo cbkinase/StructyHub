@@ -1,9 +1,3 @@
-# StructyHub
+## What is StructyHub?
 
-### TODO:
-- Get and display more submission stats (ms runtime for each test case I guess? not as much detail as on LC)
-- Preferences options
-    - public vs private repo (default public)
-    - change name of repo (default structy_submissions)
-- More info about overall stats?
-- Don't make commit when does not differ from preceding submission
+A chrome extension, inspired by <a href="https://chrome.google.com/webstore/detail/leethub/aciombdipochlnkbpcbgdpjffcfdbggi">LeetHub</a>, that automatically pushes your code to GitHub when you pass all tests on a <a href="https://structy.net/">Structy</a> problem.

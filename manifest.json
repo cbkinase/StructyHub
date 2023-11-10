@@ -9,7 +9,7 @@
         "48": "assets/logo48.png",
         "128": "assets/logo128.png"
       },
-    "permissions": ["activeTab", "webRequest", "tabs", "identity", "storage"],
+    "permissions": ["webRequest", "tabs", "identity", "storage"],
     "host_permissions": [
         "https://structy.net/*",
         "https://www.structy.net/*",
