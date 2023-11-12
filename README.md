@@ -1,15 +1,22 @@
+<h1 align="center">
+  <a href="https://github.com/cbkinase/StructyHub"><img src="assets/logo.png" alt="StructyHub - Automatically sync your Structy code to GitHub." width="400"></a>
+  <br>
+  <a href="https://github.com/cbkinase/StructyHub">StructyHub</a> - Automatically sync your Structy code with GitHub
+  <br>
+</h1>
+
 ## What is StructyHub?
 
 A chrome extension, inspired by <a href="https://chrome.google.com/webstore/detail/leethub/aciombdipochlnkbpcbgdpjffcfdbggi">LeetHub</a>, that automatically pushes your code to GitHub when you pass all tests on a <a href="https://structy.net/">Structy</a> problem.
 
 ## How can I use it?
 
-Using StructyHub is extremely straightforward. <b>Get started with the following steps:</b>
+Using StructyHub is extremely straightforward. Get started with the following steps:
 
-- Install the StructyHub from the Chrome Web Store
-- Click on the StructyHub extension
-- Click "Sign in with GitHub" to allow StructyHub to interact with the GitHub API
-- And that's it! Your successful submissions will now populate a public repository called "Structy-Hub"
+- Install <a href="https://github.com/cbkinase/StructyHub">StructyHub</a> from the Chrome Web Store.
+- Click on the StructyHub extension.
+- Click "Sign in with GitHub" to allow StructyHub to interact with the GitHub API.
+- And that's it! Your successful submissions will now populate a public repository called "Structy-Hub".
 
 
 ## Privacy Policy
