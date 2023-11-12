@@ -47,7 +47,7 @@ function handleOauth() {
             const code = new URL(redirectUri).searchParams.get('code');
             const receivedState = new URL(redirectUri).searchParams.get('state');
             if (state !== receivedState) {
-                throw new Error("Preventing possibly CSRF attack");
+                throw new Error("Preventing possible CSRF attack");
             }
             exchangeCodeForToken(code);
         }

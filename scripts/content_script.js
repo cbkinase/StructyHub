@@ -310,10 +310,11 @@ function main() {
                     const txt = getProblemText();
 
                     const repoName = "Structy-Hub";
-                    const isPrivate = true;
+                    const isPrivate = false;
                     const accessToken = await getAccessToken();
                     const owner = await getAuthenticatedUser(accessToken);
                     const repo = await createRepoIfNotExists(accessToken, owner, repoName, isPrivate);
+                    await sleep(100);
 
                     const branch = "main";
                     const content = code;
