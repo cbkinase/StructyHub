@@ -1,13 +1,13 @@
 <h1 align="center">
-  <a href="https://github.com/cbkinase/StructyHub"><img src="assets/logo.png" alt="StructyHub - Automatically sync your Structy code to GitHub." width="400"></a>
+  <a href="https://github.com/cbkinase/StructyHub"><img src="assets/logo.png" alt="StructyHub - Automatically sync your code to GitHub." width="400"></a>
   <br>
-  <a href="https://github.com/cbkinase/StructyHub">StructyHub</a> - Automatically sync your Structy code with GitHub
+  <a href="https://github.com/cbkinase/StructyHub">StructyHub</a> - Automatically sync your code with GitHub
   <br>
 </h1>
 
 ## What is StructyHub?
 
-A chrome extension, inspired by <a href="https://chrome.google.com/webstore/detail/leethub/aciombdipochlnkbpcbgdpjffcfdbggi">LeetHub</a>, that automatically pushes your code to GitHub when you pass all tests on a <a href="https://structy.net/">Structy</a> problem.
+Welcome to StructyHub, a Chrome extension designed to seamlessly integrate your coding practice with GitHub. Inspired by <a href="https://chrome.google.com/webstore/detail/leethub/aciombdipochlnkbpcbgdpjffcfdbggi">LeetHub</a>, StructyHub automates the process of pushing your successful code solutions to a dedicated GitHub repository whenever you pass all tests on a Structy problem. This tool aims to streamline your workflow and showcase your coding journey, making it an ideal companion for both learning and professional development.
 
 ## How can I use it?
 
@@ -21,28 +21,27 @@ Using StructyHub is extremely straightforward. Get started with the following st
 
 ## Privacy Policy
 
-This Privacy Policy explains our practices regarding the handling of user data and your privacy.
+This Privacy Policy outlines StructyHub's commitment to protecting user privacy and the handling of data.
+
+### Use of OAuth2 for Authentication
+StructyHub utilizes OAuth2 for user authentication, allowing access to your GitHub account without obtaining your password. While we do not directly access or store personal information, StructyHub uses OAuth2-provided tokens for authentication purposes. These tokens are securely managed and used strictly within the scope of permissions granted by the user.
+
+### Specific Network Request Monitoring
+StructyHub monitors network requests, but only those made to specific domains: www.github.com and www.structy.net. This process is essential for the functional operation of our service and is limited to the context of your interaction with these websites. We do not store or use this data beyond the immediate functional requirements.
 
 ### No Collection of Personal Data
+We prioritize your privacy and security. StructyHub does not collect, store, or process any personal information from our users. Our service operates without requiring the storage of your personal data.
 
-StructyHub values your privacy and security. We do not collect, store, or process any personal information from our users. Our service is built to function without requiring any personal data from you.
-
-### No Tracking or Analytics
-
-Your use of StructyHub is private and not monitored. We do not employ any tracking or analytics tools within our service, ensuring a completely private experience.
-
-### No Third-Party Data Sharing
-
-As we do not collect any data, we do not share or disclose any personal information with third parties.
+### No Tracking, Analytics, or Third-Party Data Sharing
+Your privacy is of utmost importance:
+- No Tracking or Analytics: We do not deploy tracking or analytics tools, ensuring a private user experience.
+- No Data Sharing: Since no personal data is collected, there is no sharing or disclosure of such information with third parties.
 
 ### Data Security
-
-Although StructyHub does not collect personal data, we prioritize the overall security of our service. Regular updates and security checks are conducted to ensure StructyHub remains secure and resilient against vulnerabilities.
+Despite not collecting personal data, we prioritize the overall security of our service. Regular updates and security checks ensure StructyHub remains secure and resilient.
 
 ### Changes to Our Privacy Policy
-
-We reserve the right to modify this privacy policy as needed. Any changes will be reflected on this page. We encourage you to review our policy periodically to stay informed.
+We reserve the right to modify this privacy policy as necessary. Any changes will be updated on this page. Regular review of our policy is encouraged.
 
 ### Contact Us
-
-For any inquiries or concerns regarding our privacy policy or practices, please open an issue at https://github.com/cbkinase/StructyHub/issues
+For questions or concerns regarding our privacy policy or practices, please reach out at https://github.com/cbkinase/StructyHub/issues.
