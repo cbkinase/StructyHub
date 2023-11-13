@@ -23,8 +23,8 @@ Using StructyHub is extremely straightforward. Get started with the following st
 
 This Privacy Policy outlines StructyHub's commitment to protecting user privacy and the handling of data.
 
-### Use of OAuth2 for Authentication
-StructyHub utilizes OAuth2 for user authentication, allowing access to your GitHub account without obtaining your password. While we do not directly access or store personal information, StructyHub uses OAuth2-provided tokens for authentication purposes. These tokens are securely managed and used strictly within the scope of permissions granted by the user.
+### Use of OAuth2 for Authorization
+StructyHub uses OAuth2 to authorize its interaction with your GitHub account. This approach ensures that StructyHub can access certain GitHub API functionalities without the need to access or store your GitHub credentials. The tokens provided by OAuth2 are used strictly within the scope of permissions granted by you, the user. This keeps the authorization process secure and focused, aligning with the extension's purpose of syncing your code to GitHub.
 
 ### Specific Network Request Monitoring
 StructyHub monitors network requests, but only those made to specific domains: www.github.com and www.structy.net. This process is essential for the functional operation of our service and is limited to the context of your interaction with these websites. We do not store or use this data beyond the immediate functional requirements.
