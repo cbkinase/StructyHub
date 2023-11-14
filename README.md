@@ -9,14 +9,14 @@
   <a href="LICENSE">
     <img src="https://img.shields.io/badge/License-MIT-green.svg" alt="MIT License"/>
   </a>
-  <a href="https://chrome.google.com/webstore/detail/structyhub/ignimibnnkigbbgdkjcmeijacogeiab">
+  <a href="https://chrome.google.com/webstore/detail/structyhub/ignimibnnkigbbgdkjcmeijacogeiabe">
     <img src="https://img.shields.io/chrome-web-store/v/ignimibnnkigbbgdkjcmeijacogeiabe.svg" alt="Chrome-Webstore-Version"/>
   </a>
   <a href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%cbkinase%2FStructyHub%2F&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=visitors&edge_flat=false"/></a>
 </p>
 
 <p align="center">
-  <a href="https://chrome.google.com/webstore/detail/structyhub/ignimibnnkigbbgdkjcmeijacogeiab">
+  <a href="https://chrome.google.com/webstore/detail/structyhub/ignimibnnkigbbgdkjcmeijacogeiabe">
     <img src="https://user-images.githubusercontent.com/53124886/111952712-34f12300-8aee-11eb-9fdd-ad579a1eb235.png" alt="Chrome-Webstore-Logo"/>
   </a>
 </p>
