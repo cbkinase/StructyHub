@@ -1,7 +1,7 @@
 <h1 align="center">
-  <a href="https://github.com/cbkinase/StructyHub"><img src="assets/logo.png" alt="StructyHub - Automatically sync your code to GitHub." width="400"></a>
+  <a href="https://chrome.google.com/webstore/detail/structyhub/ignimibnnkigbbgdkjcmeijacogeiabe"><img src="assets/logo.png" alt="StructyHub - Automatically sync your code to GitHub." width="400"></a>
   <br>
-  <a href="https://github.com/cbkinase/StructyHub">StructyHub</a> - Automatically sync your code with GitHub
+  <a href="https://chrome.google.com/webstore/detail/structyhub/ignimibnnkigbbgdkjcmeijacogeiabe">StructyHub</a> - Automatically sync your code with GitHub
   <br>
 </h1>
 
@@ -13,7 +13,7 @@ Welcome to StructyHub, a Chrome extension designed to seamlessly integrate your 
 
 Using StructyHub is extremely straightforward. Get started with the following steps:
 
-- Install <a href="https://github.com/cbkinase/StructyHub">StructyHub</a> from the Chrome Web Store.
+- Install <a href="https://chrome.google.com/webstore/detail/structyhub/ignimibnnkigbbgdkjcmeijacogeiabe">StructyHub</a> from the Chrome Web Store.
 - Click on the StructyHub extension.
 - Click "Sign in with GitHub" to allow StructyHub to interact with the GitHub API.
 - And that's it! Your successful submissions will now populate a public repository called "Structy-Hub".
