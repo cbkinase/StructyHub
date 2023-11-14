@@ -234,10 +234,10 @@ async function createCommit(token, owner, repo, branch, commitMessage, content, 
     const treeSha = commitData.tree.sha;
 
     // Check if the content of the files has changed
-    const hasChanges = await checkForChanges(token, owner, repo, branch, filepath, content, readmeFilepath, readmeContent, headers);
-    if (!hasChanges) {
-        return; // Abort if no changes are detected
-    }
+    // const hasChanges = await checkForChanges(token, owner, repo, branch, filepath, content, readmeFilepath, readmeContent, headers);
+    // if (!hasChanges) {
+    //     return; // Abort if no changes are detected
+    // }
 
     // Create a new tree with the content for the commit
     const treeUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees`;
