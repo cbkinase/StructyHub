@@ -13,6 +13,7 @@
     --gh-button-background: #24292e;
     --gh-button-background-active: #313131;
     --gh-button-text: #ffffff;
+    --gear-fill: #535353;
 }
 
 :root[data-color-mode="dark"] {
@@ -28,6 +29,7 @@
     --gh-button-background: #313131;
     --gh-button-background-active: #3b3b3b;
     --gh-button-text: #ffffff;
+    --gear-fill: #e8eaed;
 }
 
 :root[data-color-mode="light"] .hidden_in_light_mode {
@@ -43,7 +45,7 @@
     font-size: 1rem;
     font-weight: 600;
     line-height: 1;
-    color: var(--fg-color);
+    color: var(--gear-fill);
     cursor: pointer;
     background: none;
     border: none;
@@ -54,7 +56,7 @@
     width: 1.5em;
     height: 1.5em;
     fill: none;
-    stroke: var(--fg-color);
+    stroke: var(--gear-fill);
     stroke-linecap: round;
     stroke-linejoin: round;
     stroke-width: 1.5px;
@@ -108,6 +110,14 @@ html {
     margin-bottom: 18px;
     font-size: 1em;
     color: var(--subtitle-text);
+    display: block;
+    font-weight: bold;
+    padding-top: 10px;
+    text-decoration: none;
+}
+
+#subtitle:hover {
+    text-decoration: underline;
 }
 
 #loginButton {
@@ -143,5 +153,119 @@ html {
     display: flex;
     flex-direction: row;
     gap: 8px;
-    padding-left: 25px;
+    justify-content: center;
+}
+
+.view-container {
+    display: none;
+    width: 180px;
+}
+
+.view-container.active {
+    display: block;
+}
+
+.gear-icon {
+    width: 24px;
+    height: 24px;
+    fill: var(--gear-fill);
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+#linkedin-logo {
+    width: 24px;
+    height: 24px;
+    fill: var(--gear-fill);
+    margin-top: 4px;
+    opacity: 0.7;
+}
+
+.gear-icon:hover,
+#linkedin-logo:hover {
+    opacity: 0.5;
+}
+
+#settings-start {
+    display: flex;
+}
+
+#preferences-title {
+    color: var(--fg-color);
+    font-size: 24px;
+    margin-top: 8px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+#preferencesForm {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+#preferencesForm>input,
+#preferencesForm>select {
+    padding: 5px;
+    border: 1px solid var(--subtitle-text);
+    border-radius: 3px;
+    background-color: transparent;
+    color: var(--fg-color);
+    height: 20px;
+}
+
+#preferencesForm>label {
+    color: var(--subtitle-text);
+    font-size: 11px;
+    text-align: left;
+    font-weight: bold;
+}
+
+#preferencesForm>button {
+    padding: 5px;
+    background-color: rgb(0, 187, 156);
+    color: var(--gh-button-text);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+    height: 35px;
+    margin-top: 5px;
+}
+
+#preferencesForm>button:hover {
+    opacity: 0.7;
+}
+
+#cancelPreferences {
+    padding: 5px;
+    margin-top: 10px;
+    border: none;
+    border-radius: 3px;
+    color: var(--fg-color);
+    cursor: pointer;
+    align-self: center;
+    background-color: inherit;
+
+}
+
+#cancelPreferences:hover {
+    opacity: 0.6;
+}
+
+.error {
+    color: var(--red-bold);
+    font-size: 12px;
+    height: 10px;
+}
+
+#icons-container {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding-top: 10px;
+}
+
+.color_mode_button {
+    margin-top: 3px;
+    opacity: 0.9;
 }

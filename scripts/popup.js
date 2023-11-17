@@ -28,6 +28,20 @@ if (localStorage.getItem('structyhub-data-color-mode') === 'dark') {
 
 
 
+function getRepoName() {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.get(['repoName'], (result) => {
+            if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError);
+            } else if (result.repoName) {
+                resolve(result.repoName);
+            } else {
+                resolve("");
+            }
+        });
+    });
+}
+
 const loginButton = document.getElementById('loginButton');
 const btnTxt = document.getElementById("btn-text");
 
@@ -73,6 +87,71 @@ function validateToken(token, callback) {
     }).catch(error => {
         callback(false);
     });
+}
+
+function showPreferencesMenu() {
+    const loginView = document.getElementById('loginView');
+    const preferencesMenu = document.getElementById('preferencesMenu');
+    const repoInput = document.getElementById("repoName");
+    getRepoName().then(repoName => {
+        repoInput.value = repoName;
+    })
+
+    if (loginView && preferencesMenu) {
+        loginView.classList.remove('active');
+        preferencesMenu.classList.add('active');
+    }
+}
+
+const preferencesStartButton = document.getElementById('preferences-start');
+if (preferencesStartButton) {
+    preferencesStartButton.addEventListener('click', showPreferencesMenu);
+}
+
+function showLoginView() {
+    const loginView = document.getElementById('loginView');
+    const preferencesMenu = document.getElementById('preferencesMenu');
+
+    if (loginView && preferencesMenu) {
+        preferencesMenu.classList.remove('active');
+        loginView.classList.add('active');
+    }
+}
+
+function validatePreferences() {
+    const repoName = document.getElementById("repoName").value;
+    const errorRepoName = document.getElementById("errorRepoName");
+
+    const repoNameRegex = /^[a-zA-Z0-9]+[a-zA-Z0-9-_]*[a-zA-Z0-9]+$/;
+
+    errorRepoName.textContent = '';
+
+    if (!repoNameRegex.test(repoName)) {
+        errorRepoName.textContent = 'Invalid repository name';
+        return false;
+    }
+    return true;
+}
+
+const preferencesForm = document.getElementById('preferencesForm');
+if (preferencesForm) {
+    preferencesForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        if (validatePreferences()) {
+            console.log(event.target);
+            const repoName = document.getElementById("repoName").value;
+            chrome.storage.local.set({ repoName });
+            showLoginView();
+        }
+    });
+}
+
+const cancelPreferencesButton = document.getElementById('cancelPreferences');
+
+if (cancelPreferencesButton) {
+    cancelPreferencesButton.addEventListener('click', function () {
+        showLoginView();
+    })
 }
 
 

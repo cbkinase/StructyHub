@@ -329,6 +329,20 @@ async function createCommit(token, owner, repo, branch, commitMessage, content, 
     }
 }
 
+function getRepoName() {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.get(['repoName'], (result) => {
+            if (chrome.runtime.lastError) {
+                reject(chrome.runtime.lastError);
+            } else if (result.repoName) {
+                resolve(result.repoName);
+            } else {
+                resolve("Structy-Hub");
+            }
+        });
+    });
+}
+
 function main() {
     chrome.runtime.onMessage.addListener(async function (request, sender, sendResponse) {
         switch (request.action) {
@@ -341,7 +355,7 @@ function main() {
                     const code = getSubmissionCode();
                     const txt = getProblemText();
 
-                    const repoName = "Structy-Hub";
+                    const repoName = await getRepoName();
                     const isPrivate = false;
                     const accessToken = await getAccessToken();
                     const owner = await getAuthenticatedUser(accessToken);
