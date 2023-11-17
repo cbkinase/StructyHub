@@ -1,22 +1,59 @@
-// Listen for headers being received specifically for api.structy.net
+// Initialize or retrieve the MRU tab history
+chrome.storage.local.get(['tabHistory'], function (result) {
+    let tabHistory = result.tabHistory || [];
 
-chrome.webRequest.onCompleted.addListener(
-    (details) => {
-        console.log("Headers received from api.structy.net:", details.url);
-        if (details.url.includes("test-results")) {
-            chrome.tabs.query({ url: ["https://structy.net/*", "https://www.structy.net/*"] }, function (tabs) {
-                for (const tab of tabs) {
-                    chrome.tabs.sendMessage(tab.id, { action: "network_request_completed" });
-                }
-            });
+    // Update tab history on tab activation
+    chrome.tabs.onActivated.addListener(activeInfo => {
+        updateTabHistory(activeInfo.tabId);
+    });
+
+    // Update tab history on tab URL update
+    chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
+        if (changeInfo.url && changeInfo.url.includes('structy.net')) {
+            updateTabHistory(tabId);
         }
-    },
-    {
-        urls: [
-            "https://api.structy.net/api/*"
-        ]
-    },
-);
+    });
+
+    // Function to update tab history
+    function updateTabHistory(tabId) {
+        chrome.tabs.get(tabId, function (tab) {
+            if (tab.url && tab.url.includes('structy.net')) {
+                // Remove any previous entry for this tab
+                tabHistory = tabHistory.filter(item => item.tabId !== tabId);
+                // Add the tab with window ID to the end of the history
+                tabHistory.push({ tabId: tabId, windowId: tab.windowId });
+                // Update the stored tab history
+                chrome.storage.local.set({ tabHistory: tabHistory });
+            }
+        });
+    }
+
+    // Remove tab from history on tab closure
+    chrome.tabs.onRemoved.addListener(tabId => {
+        // Remove the closed tab from the history
+        tabHistory = tabHistory.filter(item => item.tabId !== tabId);
+        // Update the stored tab history
+        chrome.storage.local.set({ tabHistory: tabHistory });
+    });
+
+    // Listen for network requests and send a message to the MRU tab of structy.net
+    chrome.webRequest.onCompleted.addListener(
+        (details) => {
+            if (details.url.includes("test-results")) {
+                // Get the current window ID
+                chrome.windows.getCurrent({ populate: false }, (currentWindow) => {
+                    // Find the MRU tab for the current window
+                    let mruTab = tabHistory.reverse().find(item => item.windowId === currentWindow.id);
+                    if (mruTab) {
+                        chrome.tabs.sendMessage(mruTab.tabId, { action: "network_request_completed" });
+                    }
+                });
+            }
+        },
+        { urls: ["https://api.structy.net/api/*"] }
+    );
+});
+
 
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     switch (request.action) {

@@ -155,8 +155,10 @@ async function createRepoIfNotExists(token, owner, repoName, isPrivate) {
     const repoExists = await checkIfRepoExists(token, owner, repoName);
     if (!repoExists) {
         const repo = await createRepo(token, repoName, isPrivate);
-        const readmeContent = 'With love from StructyHub';
+        const readmeContent = `# ${repoName}\nMade with [StructyHub](https://github.com/cbkinase/StructyHub)`;
         await initializeRepoWithReadme(token, owner, repoName, readmeContent);
+        // Allow some time for GH API to realize the repo isn't empty
+        await sleep(1000);
         return repo
     } else {
         return repoExists;
@@ -185,6 +187,8 @@ async function initializeRepoWithReadme(token, owner, repoName, readmeContent) {
         if (!response.ok) {
             throw new Error('Failed to initialize repository with README.');
         }
+        const resData = await response.json();
+        chrome.storage.local.set({ cachedSha: resData.commit.sha, cachedShaTimestamp: Date.now() });
 
     } catch (error) {
         console.error('Error initializing repository:', error);
@@ -214,6 +218,34 @@ async function checkForChanges(token, owner, repo, branch, filepath, newContent,
     return currentContent !== newContent || currentReadmeContent !== newReadmeContent;
 }
 
+async function getLatestCommitSha(owner, repo, branch, headers) {
+    return new Promise((resolve, reject) => {
+        chrome.storage.local.get(['cachedSha', 'cachedShaTimestamp'], async (result) => {
+            if (result.cachedShaTimestamp) {
+                let thirtySeconds = 30 * 1000; // 30 seconds to invalidate
+                let currentTime = Date.now();
+
+                if (currentTime - result.cachedShaTimestamp < thirtySeconds) {
+                    // The timestamp is within the invalidation period
+                    resolve(result.cachedSha);
+                } else {
+                    // The timestamp is older than invalidation period
+                    const branchUrl = `https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`;
+                    const branchResponse = await fetch(branchUrl, { headers });
+                    const branchData = await branchResponse.json();
+                    resolve(branchData.object.sha);
+                }
+            } else {
+                // No cached SHA/timestamp found
+                const branchUrl = `https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`;
+                const branchResponse = await fetch(branchUrl, { headers });
+                const branchData = await branchResponse.json();
+                resolve(branchData.object.sha);
+            }
+        });
+    });
+}
+
 async function createCommit(token, owner, repo, branch, commitMessage, content, filepath, readmeFilepath, readmeContent) {
     const headers = {
         'Authorization': `token ${token}`,
@@ -221,11 +253,7 @@ async function createCommit(token, owner, repo, branch, commitMessage, content, 
         'Accept': 'application/vnd.github.v3+json'
     };
 
-    // Get the reference of the branch (to get the latest commit SHA)
-    const branchUrl = `https://api.github.com/repos/${owner}/${repo}/git/ref/heads/${branch}`;
-    const branchResponse = await fetch(branchUrl, { headers });
-    const branchData = await branchResponse.json();
-    const latestCommitSha = branchData.object.sha;
+    const latestCommitSha = await getLatestCommitSha(owner, repo, branch, headers);
 
     // Get the SHA of the tree associated with the latest commit
     const commitUrl = `https://api.github.com/repos/${owner}/${repo}/git/commits/${latestCommitSha}`;
@@ -233,11 +261,11 @@ async function createCommit(token, owner, repo, branch, commitMessage, content, 
     const commitData = await commitResponse.json();
     const treeSha = commitData.tree.sha;
 
-    // Check if the content of the files has changed
-    // const hasChanges = await checkForChanges(token, owner, repo, branch, filepath, content, readmeFilepath, readmeContent, headers);
-    // if (!hasChanges) {
-    //     return; // Abort if no changes are detected
-    // }
+    // Check if the content of any of the files has changed
+    const hasChanges = await checkForChanges(token, owner, repo, branch, filepath, content, readmeFilepath, readmeContent, headers);
+    if (!hasChanges) {
+        return; // Abort if no changes are detected
+    }
 
     // Create a new tree with the content for the commit
     const treeUrl = `https://api.github.com/repos/${owner}/${repo}/git/trees`;
@@ -292,8 +320,12 @@ async function createCommit(token, owner, repo, branch, commitMessage, content, 
     });
 
     if (updateBranchResponse.ok) {
+        // Cache the SHA so high frequency submissions don't error out
+        const data = await updateBranchResponse.json();
+        chrome.storage.local.set({ cachedSha: data.object.sha, cachedShaTimestamp: Date.now() });
     } else {
         console.error(`Error creating commit: ${updateBranchResponse.statusText}`);
+        throw new Error("Branch update failed...")
     }
 }
 
@@ -302,7 +334,7 @@ function main() {
         switch (request.action) {
             case "network_request_completed": {
                 // Slight delay to ensure UI has updated
-                await sleep(250);
+                await sleep(25);
                 const passedAllTests = checkPassedAllTests(verbose = false);
                 if (passedAllTests) {
                     const languageExtension = getLanguageExtension();
@@ -314,7 +346,6 @@ function main() {
                     const accessToken = await getAccessToken();
                     const owner = await getAuthenticatedUser(accessToken);
                     const repo = await createRepoIfNotExists(accessToken, owner, repoName, isPrivate);
-                    await sleep(100);
 
                     const branch = "main";
                     const content = code;
@@ -333,8 +364,5 @@ function main() {
         }
     });
 }
-
-
-
 
 main();
