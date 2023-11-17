@@ -120,13 +120,14 @@ function showLoginView() {
 
 function validatePreferences() {
     const repoName = document.getElementById("repoName").value;
+
     const errorRepoName = document.getElementById("errorRepoName");
 
     const repoNameRegex = /^[a-zA-Z0-9]+[a-zA-Z0-9-_]*[a-zA-Z0-9]+$/;
 
     errorRepoName.textContent = '';
 
-    if (!repoNameRegex.test(repoName)) {
+    if (repoName.length > 100 || !repoNameRegex.test(repoName)) {
         errorRepoName.textContent = 'Invalid repository name';
         return false;
     }
@@ -138,7 +139,6 @@ if (preferencesForm) {
     preferencesForm.addEventListener('submit', function(event) {
         event.preventDefault();
         if (validatePreferences()) {
-            console.log(event.target);
             const repoName = document.getElementById("repoName").value;
             chrome.storage.local.set({ repoName });
             showLoginView();
