@@ -31,6 +31,10 @@ function checkPassedAllTests(verbose = false) {
     }
 }
 
+function sleep(milliseconds) {
+    return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
 function getLanguageExtension() {
     const LANGUAGE_CONVERTER = {
         nodelogo: ".js",
@@ -50,9 +54,28 @@ function joinNodeListText(nodeList, joinWith = "\n") {
     return result.join(joinWith);
 }
 
-function getSubmissionCode() {
-    const lines = document.querySelectorAll("pre.CodeMirror-line");
-    return joinNodeListText(lines);
+async function getSubmissionCode() {
+    /*
+    Oh god, why...
+
+    Well, for anyone reading this wondering, "wtf is going on?"
+    It's because CodeMirror virtualizes "distant" parts of the page.
+
+    Do I hate this solution? Yes. Does it seem to be necessary? Also yes.
+    */
+    const nodes = new Set();
+    const box = document.querySelector(".cm-theme").parentNode.parentNode;
+    box.scrollTop = 0;
+    // TODO: should find the proper number of iterations more dynamically
+    for (let i = 0; i < 10; i++) {
+        const lines = document.querySelectorAll(".cm-line");
+        lines.forEach((line) => nodes.add(line));
+        box.scrollTop += 300;
+        // For whatever reason, a slight delay is needed here
+        // Or the next iteration won't actually update `lines`
+        await sleep(5);
+    }
+    return joinNodeListText(Array.from(nodes));
 }
 
 function getProblemText() {
@@ -68,10 +91,6 @@ function getProblemText() {
     }
 
     return { title: txtHeader, body: joinNodeListText(txtBody, "\n\n") };
-}
-
-function sleep(milliseconds) {
-    return new Promise(resolve => setTimeout(resolve, milliseconds));
 }
 
 function getAccessToken() {
@@ -352,7 +371,7 @@ function main() {
                 const passedAllTests = checkPassedAllTests(verbose = false);
                 if (passedAllTests) {
                     const languageExtension = getLanguageExtension();
-                    const code = getSubmissionCode();
+                    const code = await getSubmissionCode();
                     const txt = getProblemText();
 
                     const repoName = await getRepoName();
