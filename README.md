@@ -23,7 +23,7 @@
 
 ## What is StructyHub?
 
-Welcome to StructyHub, a Chrome extension designed to easily integrate your coding practice with GitHub. Inspired by <a href="https://chrome.google.com/webstore/detail/leethub/aciombdipochlnkbpcbgdpjffcfdbggi">LeetHub</a>, StructyHub automates the process of pushing your successful code solutions to a dedicated GitHub repository whenever you pass all tests on a Structy problem.
+Welcome to StructyHub, a Chrome extension designed to easily integrate your coding practice with GitHub. StructyHub automates the process of pushing your successful code solutions to a dedicated GitHub repository whenever you pass all tests on a Structy problem.
 
 ## How can I use it?
 
@@ -34,6 +34,8 @@ Using StructyHub is extremely straightforward. Get started with the following st
 - Click "Sign in with GitHub" to allow StructyHub to interact with the GitHub API.
 - And that's it! Your successful submissions will now populate a public repository called "Structy-Hub".
 
+> [!TIP]
+> To ensure GitHub receives the most up-to-date version of your submission, allow the Structy editor to save your latest changes before you run tests. This will be evident in the lower left-hand corner of the editor -- make sure it says "saved" instead of "saving". If it is "saving", please wait.
 
 ## Privacy Policy
 
