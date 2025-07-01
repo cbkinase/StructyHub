@@ -1,11 +1,11 @@
-const clientId = "c57a9d51b4a666b0790e";
-const clientSecret = "";
+const clientId = "Ov23lizXQ4RuA48H6K1B";
+const clientSecret = "eb05ae5eee96e801635bd85d495a69193558d2b7";
 
 function generateState() {
   const array = new Uint8Array(16);
   crypto.getRandomValues(array);
   return Array.from(array, (byte) => byte.toString(16).padStart(2, "0")).join(
-    "",
+    ""
   );
 }
 
@@ -25,7 +25,7 @@ function handleOauth() {
       }
 
       exchangeCodeForToken(code);
-    },
+    }
   );
 }
 
@@ -77,5 +77,5 @@ chrome.webRequest.onCompleted.addListener(
       chrome.tabs.sendMessage(details.tabId, { action: "submitted" });
     }
   },
-  { urls: ["https://api.structy.net/api/*"] },
+  { urls: ["https://api.structy.net/api/*"] }
 );

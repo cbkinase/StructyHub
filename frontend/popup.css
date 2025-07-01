@@ -1,271 +1,346 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap");
+
 /* %%%%%%%%  Light-Dark Mode Toggle  %%%%%%%% */
 
 :root[data-color-mode="light"] {
-    --bg-color: #fff;
-    --fg-color: #000;
-    --red: #f9e9e7;
-    --red-bold: #c84031;
-    --green: #e9f4eb;
-    --green-bold: #3c7d40;
-    --yellow: #faf4df;
-    --yellow-bold: #eeac3c;
-    --subtitle-text: #666;
-    --gh-button-background: #24292e;
-    --gh-button-background-active: #313131;
-    --gh-button-text: #ffffff;
-    --gear-fill: #535353;
+  --bg-color: #fff;
+  --fg-color: #000;
+  --red: #f9e9e7;
+  --red-bold: #c84031;
+  --green: #e9f4eb;
+  --green-bold: #3c7d40;
+  --yellow: #faf4df;
+  --yellow-bold: #eeac3c;
+  --subtitle-text: #666;
+  --gh-button-background: #24292e;
+  --gh-button-background-active: #313131;
+  --gh-button-text: #ffffff;
+  --gear-fill: #535353;
+  --title-bg: rgb(0, 187, 156);
+  --title-fg: #ffffff;
 }
 
 :root[data-color-mode="dark"] {
-    --bg-color: #202124;
-    --fg-color: #e8eaed;
-    --red: #554141;
-    --red-bold: #e49086;
-    --green: #414f46;
-    --green-bold: #91c699;
-    --yellow: #59533d;
-    --yellow-bold: #f7d575;
-    --subtitle-text: #cccccc;
-    --gh-button-background: #313131;
-    --gh-button-background-active: #3b3b3b;
-    --gh-button-text: #ffffff;
-    --gear-fill: #e8eaed;
+  --bg-color: #202124;
+  --fg-color: #e8eaed;
+  --red: #554141;
+  --red-bold: #e49086;
+  --green: #414f46;
+  --green-bold: #91c699;
+  --yellow: #59533d;
+  --yellow-bold: #f7d575;
+  --subtitle-text: #cccccc;
+  --gh-button-background: #313131;
+  --gh-button-background-active: #3b3b3b;
+  --gh-button-text: #ffffff;
+  --gear-fill: #e8eaed;
+  --title-bg: rgb(0, 187, 156);
+  --title-fg: #ffffff;
 }
 
 :root[data-color-mode="light"] .hidden_in_light_mode {
-    display: none;
+  display: none;
 }
 
 :root[data-color-mode="dark"] .hidden_in_dark_mode {
-    display: none;
+  display: none;
 }
 
 .color_mode_button {
-    padding: 5px;
-    font-size: 1rem;
-    font-weight: 600;
-    line-height: 1;
-    color: var(--gear-fill);
-    cursor: pointer;
-    background: none;
-    border: none;
-    border-radius: 50px;
+  padding: 5px;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--gear-fill);
+  cursor: pointer;
+  background: none;
+  border: none;
+  border-radius: 50px;
 }
 
 .color_mode_button svg {
-    width: 1.5em;
-    height: 1.5em;
-    fill: none;
-    stroke: var(--gear-fill);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.5px;
+  width: 1.5em;
+  height: 1.5em;
+  fill: none;
+  stroke: var(--gear-fill);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 1.5px;
 }
 
 .color_mode_button#enable_dark_mode:hover svg,
 .color_mode_button#enable_dark_mode:focus svg {
-    outline: none;
-    fill: var(--blue-bold);
+  outline: none;
+  fill: var(--blue-bold);
 }
 
 .color_mode_button#enable_light_mode:hover svg,
 .color_mode_button#enable_light_mode:focus svg {
-    outline: none;
-    fill: var(--yellow-bold);
+  outline: none;
+  fill: var(--yellow-bold);
+}
+
+.ubuntu-light {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 300;
+  font-style: normal;
 }
 
 /* %%%%%%%%  Main Styles  %%%%%%%% */
 
 body,
 html {
-    margin: 0;
-    padding: 0;
-    width: 200px;
-    height: 100%;
-    font-family: 'Roboto', sans-serif;
-    background-color: var(--bg-color);
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  height: 100%;
+  font-family: "Roboto", sans-serif;
+  background-color: var(--bg-color);
 }
 
 #container {
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding-top: 0px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding-top: 0px;
 }
 
 #title {
-    margin-bottom: 10px;
-    font-size: 1.65em;
-    color: #fff;
-    background-color: rgb(0, 187, 156);
-    width: 100%;
-    padding-top: 9px;
-    padding-bottom: 9px;
-    border-radius: 5% 40px;
+  margin: 12px 5px 12px 5px;
+  font-size: 1.75em;
+  color: var(--title-fg);
+  background-color: var(--title-bg);
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  border-radius: 5% 40px;
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-align: center;
+}
+
+#title-container {
+  display: flex;
+  background: rgb(6, 145, 121);
+  width: 100%;
 }
 
 #subtitle {
-    margin-bottom: 18px;
-    font-size: 1em;
-    color: var(--subtitle-text);
-    display: block;
-    font-weight: bold;
-    padding-top: 10px;
-    text-decoration: none;
+  margin-bottom: 18px;
+  font-size: 1em;
+  color: var(--subtitle-text);
+  display: block;
+  font-weight: bold;
+  padding-top: 10px;
+  text-decoration: none;
 }
 
 #subtitle:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 #loginButton {
-    background-color: var(--gh-button-background);
-    color: var(--gh-button-text);
-    padding: 8px 10px;
-    border: 1px solid transparent;
-    border-radius: 6px;
-    font-size: 13px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    text-decoration: none;
-    font-weight: 500;
-    transition: background-color 0.3s, color 0.3s;
-    width: 100%;
-    max-width: 200px;
+  background-color: var(--gh-button-background);
+  color: var(--gh-button-text);
+  padding: 8px 10px;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: background-color 0.3s, color 0.3s;
+  width: 100%;
+  max-width: 200px;
 }
 
 #loginButton:hover,
 #loginButton:focus,
 #loginButton:active {
-    background-color: var(--gh-button-background-active);
+  background-color: var(--gh-button-background-active);
 }
 
-#loginButton>svg {
-    fill: #ffffff;
+#loginButton > svg {
+  fill: #ffffff;
 }
 
 #subtitle-container {
-    display: flex;
-    flex-direction: row;
-    gap: 8px;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: center;
 }
 
 .view-container {
-    display: none;
-    width: 180px;
+  display: none;
+  width: 180px;
 }
 
 .view-container.active {
-    display: block;
+  display: block;
 }
 
 .gear-icon {
-    width: 24px;
-    height: 24px;
-    fill: var(--gear-fill);
-    cursor: pointer;
-    opacity: 0.8;
+  width: 24px;
+  height: 24px;
+  fill: var(--gear-fill);
+  cursor: pointer;
+  opacity: 0.8;
 }
 
 #linkedin-logo {
-    width: 24px;
-    height: 24px;
-    fill: var(--gear-fill);
-    margin-top: 4px;
-    opacity: 0.7;
+  width: 24px;
+  height: 24px;
+  fill: var(--gear-fill);
+  margin-top: 4px;
+  opacity: 0.7;
 }
 
 .gear-icon:hover,
 #linkedin-logo:hover {
-    opacity: 0.5;
+  opacity: 0.5;
 }
 
 #settings-start {
-    display: flex;
+  display: flex;
 }
 
 #preferences-title {
-    color: var(--fg-color);
-    font-size: 24px;
-    margin-top: 8px;
-    margin-bottom: 15px;
-    text-align: center;
+  color: var(--fg-color);
+  font-size: 24px;
+  margin-top: 8px;
+  margin-bottom: 15px;
+  text-align: center;
 }
 
 #preferencesForm {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
 }
 
-#preferencesForm>input,
-#preferencesForm>select {
-    padding: 5px;
-    border: 1px solid var(--subtitle-text);
-    border-radius: 3px;
-    background-color: transparent;
-    color: var(--fg-color);
-    height: 20px;
+#preferencesForm > input,
+#preferencesForm > select {
+  padding: 5px;
+  border: 1px solid var(--subtitle-text);
+  border-radius: 3px;
+  background-color: transparent;
+  color: var(--fg-color);
+  height: 20px;
 }
 
-#preferencesForm>label {
-    color: var(--subtitle-text);
-    font-size: 11px;
-    text-align: left;
-    font-weight: bold;
+#preferencesForm > label {
+  color: var(--subtitle-text);
+  font-size: 11px;
+  text-align: left;
+  font-weight: bold;
 }
 
-#preferencesForm>button {
-    padding: 5px;
-    background-color: rgb(0, 187, 156);
-    color: var(--gh-button-text);
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-    height: 35px;
-    margin-top: 5px;
+#preferencesForm > button {
+  padding: 5px;
+  background-color: rgb(0, 187, 156);
+  color: var(--gh-button-text);
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  height: 35px;
+  margin-top: 5px;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#preferencesForm>button:hover {
-    opacity: 0.7;
+#preferencesForm > button:hover {
+  opacity: 0.7;
+}
+
+#preferencesForm > button.saved {
+  background-color: var(--green-bold);
+  color: var(--gh-button-text);
+  cursor: default;
 }
 
 #cancelPreferences {
-    padding: 5px;
-    margin-top: 10px;
-    border: none;
-    border-radius: 3px;
-    color: var(--fg-color);
-    cursor: pointer;
-    align-self: center;
-    background-color: inherit;
-
+  padding: 5px;
+  margin-top: 10px;
+  border: none;
+  border-radius: 3px;
+  color: var(--fg-color);
+  cursor: pointer;
+  align-self: center;
+  background-color: inherit;
 }
 
 #cancelPreferences:hover {
-    opacity: 0.6;
+  opacity: 0.6;
 }
 
 .error {
-    color: var(--red-bold);
-    font-size: 12px;
-    height: 10px;
+  color: var(--red-bold);
+  font-size: 12px;
+  height: 10px;
 }
 
 #icons-container {
-    display: flex;
-    justify-content: space-evenly;
-    align-items: center;
-    padding-top: 10px;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  padding-top: 10px;
 }
 
 .color_mode_button {
-    margin-top: 3px;
-    opacity: 0.9;
+  margin-top: 3px;
+  opacity: 0.9;
+}
+
+/* Generic utility class */
+.hidden {
+  display: none !important;
+}
+
+/* Hide title container */
+#title-container.hidden {
+  display: none !important;
+}
+
+/* Spinner for login button */
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Toast styles for transient user feedback */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--gh-button-background);
+  color: var(--gh-button-text);
+  padding: 8px 16px;
+  border-radius: 4px;
+  font-size: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.toast.show {
+  opacity: 0.9;
 }

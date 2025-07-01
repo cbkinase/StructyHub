@@ -120,16 +120,16 @@ async function createCommit(
   codeContent,
   codePath,
   readmeContent,
-  readmePath,
+  readmePath
 ) {
   const latestCommitData = await githubRequest(
     `/repos/${owner}/${repo}/git/ref/heads/${branch}`,
-    token,
+    token
   );
   const latestCommitSha = latestCommitData.object.sha;
   const commitDetails = await githubRequest(
     `/repos/${owner}/${repo}/git/commits/${latestCommitSha}`,
-    token,
+    token
   );
 
   const tree = await githubRequest(`/repos/${owner}/${repo}/git/trees`, token, {
@@ -158,7 +158,7 @@ async function createCommit(
         tree: tree.sha,
         parents: [latestCommitSha],
       }),
-    },
+    }
   );
 
   await githubRequest(
@@ -167,7 +167,7 @@ async function createCommit(
     {
       method: "PATCH",
       body: JSON.stringify({ sha: newCommit.sha }),
-    },
+    }
   );
 }
 
@@ -178,9 +178,18 @@ function getProblemSlug() {
 }
 
 async function getProblemInfo(slug) {
-  const response = await fetch(`https://api.structy.net/api/problems/${slug}`, {
+  // Primary (non-premium) endpoint
+  let response = await fetch(`https://api.structy.net/api/problems/${slug}`, {
     credentials: "include",
   });
+
+  // If not found, try premium path
+  if (response.status === 404) {
+    response = await fetch(
+      `https://api.structy.net/api/problems/premium/${slug}`,
+      { credentials: "include" }
+    );
+  }
 
   if (!response.ok) {
     const details = await response.text();
@@ -193,7 +202,7 @@ async function getProblemInfo(slug) {
 async function getProblemAnswer(slug, language) {
   const response = await fetch(
     `https://api.structy.net/api/code/problems/${slug}/runtimes/${language}`,
-    { credentials: "include" },
+    { credentials: "include" }
   );
 
   if (!response.ok) {
@@ -211,51 +220,92 @@ function sanitize(str) {
     .replace(/\s+/g, "-");
 }
 
+function showToast(message, success = true, duration = 3000) {
+  const toast = document.createElement("div");
+  toast.id = "structyhub-toast";
+  toast.textContent = message;
+  Object.assign(toast.style, {
+    position: "fixed",
+    top: "20px",
+    right: "20px",
+    padding: "10px 16px",
+    borderRadius: "4px",
+    color: "#ffffff",
+    backgroundColor: success ? "#00C49A" : "#FF4500",
+    fontSize: "14px",
+    fontWeight: "600",
+    zIndex: "9999",
+    opacity: "0",
+    transition: "opacity 0.3s",
+  });
+
+  document.body.appendChild(toast);
+  // Trigger fade-in
+  requestAnimationFrame(() => {
+    toast.style.opacity = "1";
+  });
+
+  // Fade-out and remove after the specified duration
+  setTimeout(() => {
+    toast.style.opacity = "0";
+    toast.addEventListener("transitionend", () => toast.remove());
+  }, duration);
+}
+
 async function main() {
   chrome.runtime.onMessage.addListener(async (request) => {
     if (request.action !== "submitted") return;
     if (!checkPassedAllTests()) return;
 
-    const language = await chromeStorageGet("language");
-    const slug = getProblemSlug();
+    try {
+      const language = await chromeStorageGet("language");
+      const slug = getProblemSlug();
 
-    if (!language) {
-      throw new Error("Setup error: Language is not set");
+      if (!language) {
+        throw new Error("Setup error: Language is not set");
+      }
+
+      const languageExtension = languageToExtension(language);
+      const repoName = (await chromeStorageGet("repoName")) || "Structy-Hub";
+      const accessToken = await getAccessToken();
+      const isPrivate = false;
+
+      const [{ environments, module, number, name }, { code }] =
+        await Promise.all([
+          getProblemInfo(slug),
+          getProblemAnswer(slug, language),
+        ]);
+      const readmeContent = environments[language].prompt;
+
+      const owner = await getAuthenticatedUser(accessToken);
+      const cleanedName = sanitize(name);
+      const formattedNumber = number.toString().padStart(3, "0");
+      const pathPrefix = `${sanitize(
+        module
+      )}/${formattedNumber}-${cleanedName}`;
+      const branch = "main";
+      const commitMessage = `Solved '${name}' (${language})`;
+      const codePath = `${pathPrefix}/${cleanedName}${languageExtension}`;
+      const readmePath = `${pathPrefix}/README.md`;
+
+      await createRepoIfNotExists(accessToken, owner, repoName, isPrivate);
+      await createCommit(
+        accessToken,
+        owner,
+        repoName,
+        branch,
+        commitMessage,
+        code,
+        codePath,
+        readmeContent,
+        readmePath
+      );
+
+      showToast("Successfully uploaded to GitHub!", true);
+    } catch (error) {
+      console.error(error);
+      showToast("Failed to upload to GitHub", false);
     }
-
-    const languageExtension = languageToExtension(language);
-    const repoName = (await chromeStorageGet("repoName")) || "Structy-Hub";
-    const accessToken = await getAccessToken();
-    const isPrivate = false;
-
-    const [{ environments, module, number, name }, { code }] =
-      await Promise.all([
-        getProblemInfo(slug),
-        getProblemAnswer(slug, language),
-      ]);
-    const readmeContent = environments[language].prompt;
-
-    const owner = await getAuthenticatedUser(accessToken);
-    const cleanedName = sanitize(name);
-    const formattedNumber = number.toString().padStart(3, "0");
-    const pathPrefix = `${sanitize(module)}/${formattedNumber}-${cleanedName}`;
-    const branch = "main";
-    const commitMessage = `Solved '${name}' (${language})`;
-    const codePath = `${pathPrefix}/${cleanedName}${languageExtension}`;
-    const readmePath = `${pathPrefix}/README.md`;
-
-    await createRepoIfNotExists(accessToken, owner, repoName, isPrivate);
-    await createCommit(
-      accessToken,
-      owner,
-      repoName,
-      branch,
-      commitMessage,
-      code,
-      codePath,
-      readmeContent,
-      readmePath,
-    );
   });
 }
 
