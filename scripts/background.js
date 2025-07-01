@@ -1,5 +1,5 @@
-const clientId = "Ov23lizXQ4RuA48H6K1B";
-const clientSecret = "eb05ae5eee96e801635bd85d495a69193558d2b7";
+const clientId = "c57a9d51b4a666b0790e";
+const clientSecret = "";
 
 function generateState() {
   const array = new Uint8Array(16);
