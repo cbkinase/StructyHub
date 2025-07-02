@@ -2,7 +2,7 @@
     "manifest_version": 3,
     "name": "StructyHub",
     "author": "Cameron Beck",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Automatically integrate your Structy submissions with GitHub.",
     "icons": {
         "16": "assets/logo16.png",
