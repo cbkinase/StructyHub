@@ -14,8 +14,6 @@
     --gh-button-background-active: #313131;
     --gh-button-text: #ffffff;
     --gear-fill: #535353;
-    --title-bg: rgb(0, 187, 156);
-    --title-fg: #ffffff;
 }
 
 :root[data-color-mode="dark"] {
@@ -32,8 +30,6 @@
     --gh-button-background-active: #3b3b3b;
     --gh-button-text: #ffffff;
     --gear-fill: #e8eaed;
-    --title-bg: rgb(0, 187, 156);
-    --title-fg: #ffffff;
 }
 
 :root[data-color-mode="light"] .hidden_in_light_mode {
@@ -86,7 +82,7 @@ html {
     padding: 0;
     width: 200px;
     height: 100%;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     background-color: var(--bg-color);
 }
 
@@ -149,7 +145,7 @@ html {
     background-color: var(--gh-button-background-active);
 }
 
-#loginButton > svg {
+#loginButton>svg {
     fill: #ffffff;
 }
 
@@ -208,8 +204,8 @@ html {
     gap: 5px;
 }
 
-#preferencesForm > input,
-#preferencesForm > select {
+#preferencesForm>input,
+#preferencesForm>select {
     padding: 5px;
     border: 1px solid var(--subtitle-text);
     border-radius: 3px;
@@ -218,14 +214,14 @@ html {
     height: 20px;
 }
 
-#preferencesForm > label {
+#preferencesForm>label {
     color: var(--subtitle-text);
     font-size: 11px;
     text-align: left;
     font-weight: bold;
 }
 
-#preferencesForm > button {
+#preferencesForm>button {
     padding: 5px;
     background-color: rgb(0, 187, 156);
     color: var(--gh-button-text);
@@ -237,11 +233,11 @@ html {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-#preferencesForm > button:hover {
+#preferencesForm>button:hover {
     opacity: 0.7;
 }
 
-#preferencesForm > button.saved {
+#preferencesForm>button.saved {
     background-color: var(--green-bold);
     color: var(--gh-button-text);
     cursor: default;
