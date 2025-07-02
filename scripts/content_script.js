@@ -182,7 +182,7 @@ async function getProblemInfo(slug) {
   let path;
 
   // Check if the problem is premium
-  if (url.includes("premium")) {
+  if (url.includes("/premium/")) {
     path = `premium/${slug}`;
   } else {
     path = slug;
