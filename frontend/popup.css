@@ -230,10 +230,17 @@ html {
     cursor: pointer;
     height: 35px;
     margin-top: 5px;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #preferencesForm>button:hover {
     opacity: 0.7;
+}
+
+#preferencesForm>button.saved {
+    background-color: var(--green-bold);
+    color: var(--gh-button-text);
+    cursor: default;
 }
 
 #cancelPreferences {
@@ -245,7 +252,6 @@ html {
     cursor: pointer;
     align-self: center;
     background-color: inherit;
-
 }
 
 #cancelPreferences:hover {
@@ -267,5 +273,52 @@ html {
 
 .color_mode_button {
     margin-top: 3px;
+    opacity: 0.9;
+}
+
+/* Generic utility class */
+.hidden {
+    display: none !important;
+}
+
+/* Hide title container */
+#title-container.hidden {
+    display: none !important;
+}
+
+/* Spinner for login button */
+.spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Toast styles for transient user feedback */
+.toast {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--gh-button-background);
+    color: var(--gh-button-text);
+    padding: 8px 16px;
+    border-radius: 4px;
+    font-size: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.toast.show {
     opacity: 0.9;
 }

@@ -41,6 +41,8 @@
                     </path>
                 </svg>
                 <span id="btn-text">Sign in with GitHub</span>
+                <!-- Inline spinner hidden by default - shown when verifying/login in progress -->
+                <span id="loginSpinner" class="spinner hidden" aria-hidden="true"></span>
             </button>
 
             <div id="icons-container">
@@ -88,6 +90,8 @@
             <button id="cancelPreferences">Cancel</button>
         </div>
     </div>
+    <!-- Toast container for transient user messages -->
+    <div id="toast" class="toast hidden" aria-live="polite"></div>
     <script src="../scripts/popup.js"></script>
 </body>
 
