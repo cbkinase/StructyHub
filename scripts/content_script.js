@@ -120,16 +120,16 @@ async function createCommit(
   codeContent,
   codePath,
   readmeContent,
-  readmePath
+  readmePath,
 ) {
   const latestCommitData = await githubRequest(
     `/repos/${owner}/${repo}/git/ref/heads/${branch}`,
-    token
+    token,
   );
   const latestCommitSha = latestCommitData.object.sha;
   const commitDetails = await githubRequest(
     `/repos/${owner}/${repo}/git/commits/${latestCommitSha}`,
-    token
+    token,
   );
 
   const tree = await githubRequest(`/repos/${owner}/${repo}/git/trees`, token, {
@@ -158,7 +158,7 @@ async function createCommit(
         tree: tree.sha,
         parents: [latestCommitSha],
       }),
-    }
+    },
   );
 
   await githubRequest(
@@ -167,7 +167,7 @@ async function createCommit(
     {
       method: "PATCH",
       body: JSON.stringify({ sha: newCommit.sha }),
-    }
+    },
   );
 }
 
@@ -178,18 +178,19 @@ function getProblemSlug() {
 }
 
 async function getProblemInfo(slug) {
-  // Primary (non-premium) endpoint
-  let response = await fetch(`https://api.structy.net/api/problems/${slug}`, {
+  const url = window.location.pathname;
+  let path;
+
+  // Check if the problem is premium
+  if (url.includes("premium")) {
+    path = `premium/${slug}`;
+  } else {
+    path = slug;
+  }
+
+  const response = await fetch(`https://api.structy.net/api/problems/${path}`, {
     credentials: "include",
   });
-
-  // If not found, try premium path
-  if (response.status === 404) {
-    response = await fetch(
-      `https://api.structy.net/api/problems/premium/${slug}`,
-      { credentials: "include" }
-    );
-  }
 
   if (!response.ok) {
     const details = await response.text();
@@ -202,7 +203,7 @@ async function getProblemInfo(slug) {
 async function getProblemAnswer(slug, language) {
   const response = await fetch(
     `https://api.structy.net/api/code/problems/${slug}/runtimes/${language}`,
-    { credentials: "include" }
+    { credentials: "include" },
   );
 
   if (!response.ok) {
@@ -281,7 +282,7 @@ async function main() {
       const cleanedName = sanitize(name);
       const formattedNumber = number.toString().padStart(3, "0");
       const pathPrefix = `${sanitize(
-        module
+        module,
       )}/${formattedNumber}-${cleanedName}`;
       const branch = "main";
       const commitMessage = `Solved '${name}' (${language})`;
@@ -298,7 +299,7 @@ async function main() {
         code,
         codePath,
         readmeContent,
-        readmePath
+        readmePath,
       );
 
       showToast("Successfully uploaded to GitHub!", true);
